@@ -379,7 +379,7 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
             pygame.display.update()
             mainClock.tick(60)
 
-    
+
 
 
 def main():
@@ -604,7 +604,23 @@ def main():
 
     run_level(levels[0], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Luna Ascension EX - flashygoodness.mp3")
 
-    # CUTSCENE HERE!!! (intro and panic)
+    # CUTSCENE 1
+    '''
+    img_1 = pygame.image.load("img/cutscene1/Best_Friends.png")
+    img_2 = pygame.image.load("img/cutscene1/Oh_No.png")
+    img_3 = pygame.image.load("img/cutscene1/Amulet_&_note.png")
+    img_4 = pygame.image.load("img/cutscene1/Dark_Clouds.png")
+
+    img_1 = pygame.transform.scale(img_1, (600, 600))
+    img_2 = pygame.transform.scale(img_2, (600, 600))
+    img_3 = pygame.transform.scale(img_3, (600, 600))
+    img_4 = pygame.transform.scale(img_4, (600, 600))
+
+    txt_1 = Paragraph("Axion and Quaternius were the best of friends")
+
+    
+    '''
+    # END CUTSCENE 1
 
     run_level(levels[1], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Cheat Codes - Nitro Fun.mp3")
     run_level(levels[2], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Commando Steve - Bossfight.mp3")
