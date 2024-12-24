@@ -281,7 +281,7 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
                 level.spread_fog(100)
             elif time_in_seconds > 172.5:
                 level.spread_fog(39)
-            elif time_in_seconds > 170:
+            elif time_in_seconds > 169.5:
                 level.spread_fog(28)
                 done = True
             elif time_in_seconds > 7:
@@ -379,7 +379,81 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
             pygame.display.update()
             mainClock.tick(60)
 
+def fade_in(img, frames, blackout, screen):
+    for x in range(frames):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
 
+        blackout.fade_in(frames-x, frames)
+
+        screen.blit(img, (0, 0))
+        blackout.draw(screen)
+
+        pygame.display.update()
+        mainClock.tick(60)
+
+
+def fade(old_img, new_img, frames, blackout, screen):
+
+    for x in range(frames//2):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+        blackout.fade_out(frames//2-x, frames/2)
+
+        screen.blit(old_img, (0, 0))
+        blackout.draw(screen)
+
+        pygame.display.update()
+        mainClock.tick(60)
+    
+    for x in range(frames//2):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+        blackout.fade_in(frames//2-x, frames/2)
+
+        screen.blit(new_img, (0, 0))
+        blackout.draw(screen)
+
+        pygame.display.update()
+        mainClock.tick(60)
+
+def fade_out(img, frames, blackout, screen):
+    for x in range(frames):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+        blackout.fade_out(frames-x, frames)
+
+        screen.blit(img, (0, 0))
+        blackout.draw(screen)
+
+        pygame.display.update()
+        mainClock.tick(60)
+
+def image_and_text(img, message, frames, screen):
+    for x in range(frames):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+        message.create_text(x)
+
+        screen.blit(img, (0, 0))
+        message.draw_text(x, screen)
+
+        pygame.display.update()
+        mainClock.tick(60)
 
 
 def main():
@@ -599,28 +673,49 @@ def main():
 
 
 
-
     
 
-    run_level(levels[0], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Luna Ascension EX - flashygoodness.mp3")
-
     # CUTSCENE 1
-    '''
+    pygame.mixer.music.load("music/Sorrow - flashygoodness.mp3")
+    pygame.mixer.music.play(0)
+    
     img_1 = pygame.image.load("img/cutscene1/Best_Friends.png")
     img_2 = pygame.image.load("img/cutscene1/Oh_No.png")
     img_3 = pygame.image.load("img/cutscene1/Amulet_&_note.png")
     img_4 = pygame.image.load("img/cutscene1/Dark_Clouds.png")
-
     img_1 = pygame.transform.scale(img_1, (600, 600))
     img_2 = pygame.transform.scale(img_2, (600, 600))
     img_3 = pygame.transform.scale(img_3, (600, 600))
     img_4 = pygame.transform.scale(img_4, (600, 600))
 
-    txt_1 = Paragraph("Axion and Quaternius were the best of friends")
+    txt_1 = Paragraph("Axion and Quaternius were the best of<friends. They loved to go on adventures<together, exploring their world.")
+    txt_2 = Paragraph("They jump over deep pits, through<narrow tunnels and up steep mountains.<Parkour was their favorite pastime.")
+    txt_3 = Paragraph("One fateful morning, Axion finds that<Quaternius is nowhere to be found. Axion<looks everywhere for him.")
+    txt_4 = Paragraph("The only hint that Quaternius was here<is a note and an amulet that had been left<behind.")
+    txt_5 = Paragraph("\"Axion, I am in grave danger. I am<leaving this behind for you to come to my<aid. This amulet is very powerful.\"")
+    txt_6 = Paragraph("So, summoning up all of his strength,<Axion headed in the direction of the big<dark clouds.")
 
     
-    '''
+
+    fade_in(img_1, 60, BLACKOUT, windowSurface)
+    image_and_text(img_1, txt_1, 640, windowSurface)
+    image_and_text(img_1, txt_2, 640, windowSurface)
+    pygame.mixer.music.fadeout(600)
+    fade(img_1, img_2, 60, BLACKOUT, windowSurface)
+    pygame.mixer.music.load("music/Eldritch Crisis - flashygoodness.mp3")
+    pygame.mixer.music.play(0)
+    image_and_text(img_2, txt_3, 640, windowSurface)
+    image_and_text(img_2, txt_4, 640, windowSurface)
+    fade(img_2, img_3, 60, BLACKOUT, windowSurface)
+    image_and_text(img_3, txt_5, 640, windowSurface)
+    fade(img_3, img_4, 60, BLACKOUT, windowSurface)
+    image_and_text(img_4, txt_6, 640, windowSurface)
+    pygame.mixer.music.fadeout(3000)
+    fade_out(img_4, 180, BLACKOUT, windowSurface)
+    
     # END CUTSCENE 1
+
+
 
     run_level(levels[1], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Cheat Codes - Nitro Fun.mp3")
     run_level(levels[2], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Commando Steve - Bossfight.mp3")
@@ -631,7 +726,7 @@ def main():
     boss_level(levels[4], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit)
 
     # CUTSCENE HERE!!! (the longest one, quaternius is saved!!!)
-
+    
 
 
     
@@ -676,7 +771,7 @@ def main():
 
     title_txt = title_font.render("Axion's Journey", False, WHITE)
     title_rect = title_txt.get_rect()
-    title_rect.midtop = (300, 630)
+    title_rect.midtop = (300, 620)
 
     credit_items = []
     credit_rects = []
@@ -717,7 +812,7 @@ def main():
 
 
         counter += 1
-        if counter == 3:
+        if counter == 4:
             counter = 0
             title_rect.top -= 1
             for rect in credit_rects:
@@ -736,6 +831,15 @@ def main():
         pygame.display.update()
         mainClock.tick(60)
     
+    pygame.mixer.music.fadeout(10000)
+    for x in range(60*10):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
 
+        
+        pygame.display.update()
+        mainClock.tick(60)
 
 main()
