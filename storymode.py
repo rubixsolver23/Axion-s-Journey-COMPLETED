@@ -276,8 +276,10 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
                 BLACKOUT.fade_in(fadein_frames, 30)
         
             time_in_seconds = pygame.mixer.music.get_pos() / 1000
-
-            if time_in_seconds > 180.5:
+            
+            if time_in_seconds > 185:
+                level.spread_fog(150)
+            elif time_in_seconds > 180.5:
                 level.spread_fog(100)
             elif time_in_seconds > 172.5:
                 level.spread_fog(39)
@@ -481,9 +483,12 @@ def main():
     WHITE = (255, 255, 255)
     SKY = (192, 253, 255)
 
+    title_font = pygame.font.Font("fonts/Poxast-R9Jjl.ttf", 30)
+
 
     
     # LOAD IN
+    '''
     pygame.mixer.music.load("music/Adventure - Disasterpiece.mp3")
     pygame.mixer.music.play(-1)
 
@@ -543,7 +548,6 @@ def main():
     
 
 
-    title_font = pygame.font.Font("fonts/Poxast-R9Jjl.ttf", 30)
     title_txt = title_font.render("Axion's Journey", False, (10, 10, 150))
     title_rect = title_txt.get_rect()
     title_rect.center = (300, 650)
@@ -695,7 +699,6 @@ def main():
     txt_5 = Paragraph("\"Axion, I am in grave danger. I am<leaving this behind for you to come to my<aid. This amulet is very powerful.\"")
     txt_6 = Paragraph("So, summoning up all of his strength,<Axion headed in the direction of the big<dark clouds.")
 
-    
 
     fade_in(img_1, 60, BLACKOUT, windowSurface)
     image_and_text(img_1, txt_1, 640, windowSurface)
@@ -722,7 +725,7 @@ def main():
     run_level(levels[3], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Oceanic Breeze - flashygoodness.mp3")
 
     # CUTSCENE HERE!!! (oh no, hes gonna get me)
-    
+    '''
     boss_level(levels[4], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit)
 
     # CUTSCENE HERE!!! (the longest one, quaternius is saved!!!)
@@ -771,7 +774,7 @@ def main():
 
     title_txt = title_font.render("Axion's Journey", False, WHITE)
     title_rect = title_txt.get_rect()
-    title_rect.midtop = (300, 620)
+    title_rect.midtop = (300, 630)
 
     credit_items = []
     credit_rects = []
@@ -812,7 +815,7 @@ def main():
 
 
         counter += 1
-        if counter == 4:
+        if counter >= 3:
             counter = 0
             title_rect.top -= 1
             for rect in credit_rects:
