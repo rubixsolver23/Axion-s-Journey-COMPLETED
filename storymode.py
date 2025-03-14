@@ -277,13 +277,15 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
         
             time_in_seconds = pygame.mixer.music.get_pos() / 1000
             
-            if time_in_seconds > 185:
-                level.spread_fog(150)
+            if time_in_seconds > 184.3:
+                level.spread_fog(0)
             elif time_in_seconds > 180.5:
                 level.spread_fog(100)
-            elif time_in_seconds > 172.5:
-                level.spread_fog(39)
-            elif time_in_seconds > 169.5:
+            elif time_in_seconds > 173:
+                level.spread_fog(53)
+            elif time_in_seconds > 169.3:
+                while len(level.fog_blocks) < 5425:
+                    level.spread_fog(0)
                 level.spread_fog(28)
                 done = True
             elif time_in_seconds > 7:
@@ -297,6 +299,8 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
             
             if not done:
                 keys = pygame.key.get_pressed()
+            else:
+                keys = []
 
             if player != None:
                 if player.dead == 0:
