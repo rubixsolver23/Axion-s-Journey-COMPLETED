@@ -397,8 +397,9 @@ class PlayerBlock(Block):
 
     def main_loop(self, buttons_pressed, level, death_event, finish_event, fog_event):
         self.fall()
-        self.walk(buttons_pressed, level)
-        self.jump(buttons_pressed)
+        if buttons_pressed != []:
+            self.walk(buttons_pressed, level)
+            self.jump(buttons_pressed)
         self.pushed_by_wind()
         self.update_pos(level)
         self.get_touching_wind(level)

@@ -68,6 +68,9 @@ def main():
                         LEVELEDITOR.level_idx += 1
                         if LEVELEDITOR.level_idx >= len(levels):
                             LEVELEDITOR.level_idx = 0
+
+                    elif event.key == K_0:
+                        LEVELMANAGER.save_all(levels)
                         
 
                     # change brush

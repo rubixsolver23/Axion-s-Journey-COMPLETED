@@ -13,7 +13,14 @@ windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), flags=pygam
 pygame.display.set_caption("Axion's Journey")
 
 
+
+deaths = 0
+
+
+
+
 def run_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, song):
+    global deaths
 
     level_color = (192, 253, 255)
 
@@ -77,6 +84,7 @@ def run_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, song):
                 level.death_particles(player)
                 GAME.camera.screenshake_intensity = 18
                 hit.play()
+                deaths += 1
 
             elif event.type == FINISH:
                 player = None
@@ -184,6 +192,8 @@ def run_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, song):
 
 
 def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
+    global deaths
+
 
     done = False
 
@@ -253,6 +263,7 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
                     level.death_particles(player)
                     GAME.camera.screenshake_intensity = 18
                     hit.play()
+                    deaths += 1
 
                 elif event.type == FINISH:
                     player = None
@@ -260,15 +271,16 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
                     pygame.mixer.music.fadeout(6000)
                     done = True
 
-                elif event.type == FOGGED:
+                elif event.type == FOGGED and not done:
                     player = None
-                    fadeout_frames = 300
-                    pygame.mixer.music.fadeout(6000)
+                    fadeout_frames = 150
+                    pygame.mixer.music.fadeout(3000)
+                    deaths += 1
 
             
             if fadeout_frames > -1:
                 fadeout_frames -= 1
-                BLACKOUT.fade_out(fadeout_frames, 300)
+                BLACKOUT.fade_out(fadeout_frames, 150)
                 if fadeout_frames == 0:
                     break
             elif fadein_frames > 0:
@@ -277,12 +289,9 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
         
             time_in_seconds = pygame.mixer.music.get_pos() / 1000
             
-            if time_in_seconds > 184.3:
-                level.spread_fog(0)
-            elif time_in_seconds > 180.5:
-                level.spread_fog(100)
-            elif time_in_seconds > 173:
-                level.spread_fog(53)
+
+            if time_in_seconds > 173:
+                level.spread_fog(49)
             elif time_in_seconds > 169.3:
                 while len(level.fog_blocks) < 5425:
                     level.spread_fog(0)
@@ -304,8 +313,7 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
 
             if player != None:
                 if player.dead == 0:
-                    if not level.is_writing:
-                        player.main_loop(keys, level, DEATH, FINISH, FOGGED)
+                    player.main_loop(keys, level, DEATH, FINISH, FOGGED)
                 else:
                     player.dead -= 1
                     if player.dead == 0:
@@ -722,14 +730,14 @@ def main():
     
     # END CUTSCENE 1
 
+    '''
 
-
-    run_level(levels[1], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Cheat Codes - Nitro Fun.mp3")
-    run_level(levels[2], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Commando Steve - Bossfight.mp3")
-    run_level(levels[3], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Oceanic Breeze - flashygoodness.mp3")
+    #run_level(levels[1], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Cheat Codes - Nitro Fun.mp3")
+    #run_level(levels[2], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Commando Steve - Bossfight.mp3")
+    #run_level(levels[3], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, hit, "music/Oceanic Breeze - flashygoodness.mp3")
 
     # CUTSCENE HERE!!! (oh no, hes gonna get me)
-    '''
+    
     boss_level(levels[4], GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit)
 
     # CUTSCENE HERE!!! (the longest one, quaternius is saved!!!)
@@ -768,6 +776,8 @@ def main():
         "Lincolin Haggard": "Playtesting",
         "Dax Petersen": "Playtesting",
         "Taggart Cook": "Playtesting",
+
+        "heading6": "Deaths: " + str(deaths),
 
         "headingfinal": "THANK YOU FOR PLAYING!"
 
