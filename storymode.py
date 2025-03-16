@@ -265,12 +265,6 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
                     hit.play()
                     deaths += 1
 
-                elif event.type == FINISH:
-                    player = None
-                    fadeout_frames = 300
-                    pygame.mixer.music.fadeout(6000)
-                    done = True
-
                 elif event.type == FOGGED and not done:
                     player = None
                     fadeout_frames = 150
@@ -283,16 +277,18 @@ def boss_level(level, GAME, BLACKOUT, CHECKPOINT, DEATH, FINISH, FOGGED, hit):
                 BLACKOUT.fade_out(fadeout_frames, 150)
                 if fadeout_frames == 0:
                     break
+
             elif fadein_frames > 0:
                 fadein_frames -= 1
                 BLACKOUT.fade_in(fadein_frames, 30)
         
             time_in_seconds = pygame.mixer.music.get_pos() / 1000
             
-
-            if time_in_seconds > 173:
+            if time_in_seconds > 185 and time_in_seconds < 185.5:
+                fadeout_frames = 300
+            elif time_in_seconds > 173:
                 level.spread_fog(49)
-            elif time_in_seconds > 169.3:
+            elif time_in_seconds > 169:
                 while len(level.fog_blocks) < 5425:
                     level.spread_fog(0)
                 level.spread_fog(28)
